@@ -1,210 +1,178 @@
 import 'package:flutter/material.dart';
+import 'Signup_Design.dart';
 
-class Signup extends StatefulWidget {
+class FormPage extends StatefulWidget {
   @override
-  _SignupState createState() => _SignupState();
+  _FormPageState createState() => _FormPageState();
 }
 
-class _SignupState extends State<Signup> {
+class _FormPageState extends State<FormPage> {
+
+  String name,email,phone;
+
+  //TextController to read text entered in text field
+  TextEditingController password = TextEditingController();
+  TextEditingController confirmpassword = TextEditingController();
+
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height;
-    var width = MediaQuery.of(context).size.width;
-    return Container(
-      decoration: BoxDecoration(
-          gradient:
-              new LinearGradient(colors: [Colors.blue, Colors.blue[200]])),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            Container(
-              height: height * 0.15,
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formkey,
+
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 55,
+                  backgroundColor: Colors.black,
+                  child: CircleAvatar(
+                    backgroundImage: AssetImage('images/logo.png'),
+                    radius: 50,
+                  ),
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom:15,left: 10,right: 10),
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: buildInputDecoration(Icons.person,"Full Name"),
+                    validator: (String value){
+                      if(value.isEmpty)
+                      {
+                        return 'Please Enter Name';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value){
+                      name = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15,left: 10,right: 10),
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration:buildInputDecoration(Icons.email,"Email"),
+                    validator: (String value){
+                      if(value.isEmpty)
+                      {
+                        return 'Please a Enter';
+                      }
+                      if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
+                        return 'Please a valid Email';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value){
+                      email = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15,left: 10,right: 10),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration:buildInputDecoration(Icons.phone,"Phone No"),
+                    validator: (String value){
+                      if(value.isEmpty)
+                      {
+                        return 'Please enter phone no ';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value){
+                      phone = value;
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15,left: 10,right: 10),
+                  child: TextFormField(
+                    controller: password,
+                    obscureText: true,
+                    keyboardType: TextInputType.text,
+                    decoration:buildInputDecoration(Icons.lock,"Password"),
+                    validator: (String value){
+                      if(value.isEmpty)
+                      {
+                        return 'Please enter password';
+                      }
+                      print(password.text);
+
+                      print(password.text);
+
+                      if(password.text!=password.text){
+                        return "Password does not match";
+                      }
+
+                      return null;
+                    },
+
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15,left: 10,right: 10),
+                  child: TextFormField(
+                    controller: confirmpassword,
+                    obscureText: true,
+                    keyboardType: TextInputType.text,
+                    decoration:buildInputDecoration(Icons.lock,"Confirm Password"),
+                    validator: (String value){
+                      if(value.isEmpty)
+                      {
+                        return 'Please re-enter password';
+                      }
+                      print(password.text);
+
+                      print(confirmpassword.text);
+
+                      if(password.text!=confirmpassword.text){
+                        return "Password does not match";
+                      }
+
+                      return null;
+                    },
+
+                  ),
+                ),
+
+                SizedBox(
+                  width: 200,
+                  height: 50,
+                  child: RaisedButton(
+
+                    color: Colors.blue,
+                    onPressed: (){
+
+                      if(_formkey.currentState.validate())
+                      {
+                        print("successful");
+
+                        return;
+                      }else{
+                        print("UnSuccessfull");
+                      }
+                    },
+
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                        side: BorderSide(color: Colors.blue,width: 2)
+                    ),
+                    textColor:Colors.white,child: Text("Submit"),
+
+                  ),
+                )
+              ],
             ),
-            Container(
-              margin: EdgeInsets.only(top: height * 0.15),
-              height: height * 0.85,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(50),
-                      topRight: Radius.circular(50))),
-              child: ListView(
-                children: [
-                  Text(
-                    'Signup'.toUpperCase(),
-                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                    textAlign: TextAlign.center,
-                  ),
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
-                  Center(
-                    child: Container(
-                      height: 1,
-                      width: width * 0.8,
-                      color: Colors.grey,
-                    ),
-                  ),
-                    SizedBox(
-                    height: height * 0.1,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-                    child: TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          hintText: "Name * ",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.bold, letterSpacing: 1.8),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 1,
-                                style: BorderStyle.solid,
-                                color: Colors.blue),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.all(12),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 1,
-                                style: BorderStyle.solid,
-                                color: Colors.grey),
-                          ),
-                        )),
-                  ),
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-                    child: TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          hintText: "Email * ",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.bold, letterSpacing: 1.8),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 1,
-                                style: BorderStyle.solid,
-                                color: Colors.blue),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.all(12),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 1,
-                                style: BorderStyle.solid,
-                                color: Colors.grey),
-                          ),
-                        )),
-                  ),
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-                    child: TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.text,
-                        decoration: InputDecoration(
-                          hintText: "Mobile Number * ",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.bold, letterSpacing: 1.8),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 1,
-                                style: BorderStyle.solid,
-                                color: Colors.blue),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.all(12),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 1,
-                                style: BorderStyle.solid,
-                                color: Colors.grey),
-                          ),
-                        )),
-                  ),
-                  SizedBox(
-                    height: height * 0.04,
-                  ),
-                      Container(
-                    margin: EdgeInsets.symmetric(horizontal: width * 0.05),
-                    child: TextField(
-                        textAlign: TextAlign.center,
-                        keyboardType: TextInputType.text,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          hintText: "Password * ",
-                          hintStyle: TextStyle(
-                              fontWeight: FontWeight.bold, letterSpacing: 1.8),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 1,
-                                style: BorderStyle.solid,
-                                color: Colors.blue),
-                          ),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          contentPadding: EdgeInsets.all(12),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
-                                width: 1,
-                                style: BorderStyle.solid,
-                                color: Colors.grey),
-                          ),
-                        )),
-                  ),
-                   SizedBox(
-                    height: height * 0.07,
-                  ),
-                  Center(
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 26, vertical: 10),
-                      decoration: BoxDecoration(
-                          gradient: new LinearGradient(
-                              colors: [Colors.blue, Colors.blue[200]]),
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                                blurRadius: 4,
-                                color: Colors.blue[200],
-                                offset: Offset(2, 2))
-                          ]),
-                      child: Text(
-                        "Signup".toUpperCase(),
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.7),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ),
-               
-               
-                ],
-              ),
-            )
-          ],
+          ),
         ),
       ),
     );

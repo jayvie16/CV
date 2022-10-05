@@ -1,6 +1,6 @@
 import 'package:authui/ForgotPassword.dart';
 import 'package:flutter/material.dart';
-import 'Signup.dart';
+import 'package:authui/Signup.dart';
 import 'package:authui/main1.dart';
 
 class Login extends StatefulWidget {
@@ -9,6 +9,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -27,8 +28,8 @@ class _LoginState extends State<Login> {
               height: height * 0.15,
             ),
             Container(
-              margin: EdgeInsets.only(top: height * 0.15),
-              height: height * 0.85,
+              margin: EdgeInsets.only(top: height * 0.10),
+              height: height * 0.90,
               decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('images/background.jpg'),
@@ -96,13 +97,7 @@ class _LoginState extends State<Login> {
                                 color: Colors.grey),
                           ),
                         ),
-                      validator: (value){
-                          if(value!.isEmpty || !RegExp(r'^[a-z A-Z]' ).hasMatch(value!)){
-                             return "Enter Correct name";
-                          }else{
-                            return null;
-                          }
-                      },
+
                     ),
 
 
@@ -222,7 +217,7 @@ class _LoginState extends State<Login> {
                   GestureDetector(
                     onTap: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Signup()));
+                          MaterialPageRoute(builder: (context) => FormPage()));
                     },
                     child: Center(
                       child: Container(
