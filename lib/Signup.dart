@@ -8,7 +8,7 @@ class FormPage extends StatefulWidget {
 
 class _FormPageState extends State<FormPage> {
 
-  String name,email,phone;
+  String age,name,email,phone;
 
   //TextController to read text entered in text field
   TextEditingController password = TextEditingController();
@@ -16,11 +16,35 @@ class _FormPageState extends State<FormPage> {
 
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
+
   @override
   Widget build(BuildContext context) {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
+      body: Container(
+        decoration: BoxDecoration(
+        gradient:
+        new LinearGradient(colors: [Colors.purpleAccent, Colors.orange[200]])),
+    child: Scaffold(
+    backgroundColor: Colors.transparent,
+    body: Stack(
+    children: [
+    Container(
+    height: height * 0.15,
+    ),
+    Container(
+    margin: EdgeInsets.only(top: height * 0.15),
+    height: height * 0.85,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('images/background.jpg'), fit: BoxFit.cover
+          ),
+    borderRadius: BorderRadius.only(
+    topLeft: Radius.circular(50),
+    topRight: Radius.circular(50))),
         child: SingleChildScrollView(
           child: Form(
             key: _formkey,
@@ -28,14 +52,22 @@ class _FormPageState extends State<FormPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                CircleAvatar(
-                  radius: 55,
-                  backgroundColor: Colors.black,
-                  child: CircleAvatar(
-                    backgroundImage: AssetImage('images/logo.png'),
-                    radius: 50,
+
+                SizedBox(
+                  height: 15,
+                ),
+
+                Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontSize: 60,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Times New Roman',
                   ),
                 ),
+
+
                 SizedBox(
                   height: 15,
                 ),
@@ -43,11 +75,15 @@ class _FormPageState extends State<FormPage> {
                   padding: const EdgeInsets.only(bottom:15,left: 10,right: 10),
                   child: TextFormField(
                     keyboardType: TextInputType.text,
-                    decoration: buildInputDecoration(Icons.person,"Full Name"),
+                    decoration: buildInputDecoration(Icons.person,"Firstname"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (String value){
-                      if(value.isEmpty)
+                      if(value == null ||value.isEmpty)
                       {
-                        return 'Please Enter Name';
+                        return 'Please enter your Firstname';
+                      }
+                      if(!RegExp("^[a-zA-Z]+[a-zA-Z]").hasMatch(value)){
+                        return 'Letters only.';
                       }
                       return null;
                     },
@@ -56,15 +92,80 @@ class _FormPageState extends State<FormPage> {
                     },
                   ),
                 ),
+
+                Padding(
+                  padding: const EdgeInsets.only(bottom:15,left: 10,right: 10),
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: buildInputDecoration(Icons.person,"Middle Name"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (String value){
+                      if(value == null ||value.isEmpty)
+                      {
+                        return 'Please enter your Middle Name';
+                      }
+                      if(!RegExp("^[a-zA-Z]+[a-zA-Z]").hasMatch(value)){
+                        return 'Letters only.';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value){
+                      name = value;
+                    },
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(bottom:15,left: 10,right: 10),
+                  child: TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: buildInputDecoration(Icons.person,"Lastname"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (String value){
+                      if(value == null ||value.isEmpty)
+                      {
+                        return 'Please enter your Lastname';
+                      }
+                      if(!RegExp("^[a-zA-Z]+[a-zA-Z]").hasMatch(value)){
+                        return 'Letters only.';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value){
+                      name = value;
+                    },
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(bottom:15,left: 10,right: 10),
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    decoration: buildInputDecoration(Icons.calendar_month_outlined,"Age"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (String value){
+                      if(value == null ||value.isEmpty)
+                      {
+                        return 'Please enter your age.';
+                      }
+                      return null;
+                    },
+                    onSaved: (String value){
+                      age = value;
+                    },
+                  ),
+                ),
+
                 Padding(
                   padding: const EdgeInsets.only(bottom: 15,left: 10,right: 10),
                   child: TextFormField(
                     keyboardType: TextInputType.text,
                     decoration:buildInputDecoration(Icons.email,"Email"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (String value){
-                      if(value.isEmpty)
+                      if(value == null ||value.isEmpty)
                       {
-                        return 'Please a Enter';
+                        return 'Please Enter Email';
                       }
                       if(!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]").hasMatch(value)){
                         return 'Please a valid Email';
@@ -81,10 +182,21 @@ class _FormPageState extends State<FormPage> {
                   child: TextFormField(
                     keyboardType: TextInputType.number,
                     decoration:buildInputDecoration(Icons.phone,"Phone No"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (String value){
-                      if(value.isEmpty)
+                      if(value == null ||value.isEmpty)
                       {
                         return 'Please enter phone no ';
+
+                      }
+                      else if (value.length < 11){
+                        return "Kulang!!";
+                      }
+                      else if (value.length > 11){
+                        return "Sobra!!";
+                      }
+                      else {
+                        return null;
                       }
                       return null;
                     },
@@ -100,20 +212,19 @@ class _FormPageState extends State<FormPage> {
                     obscureText: true,
                     keyboardType: TextInputType.text,
                     decoration:buildInputDecoration(Icons.lock,"Password"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (String value){
-                      if(value.isEmpty)
+                      if(value == null ||value.isEmpty)
                       {
                         return 'Please enter password';
                       }
-                      print(password.text);
-
-                      print(password.text);
-
-                      if(password.text!=password.text){
-                        return "Password does not match";
+                      if(!RegExp(r"(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*\W)").hasMatch(value)){
+                        return 'Enter Valid Password';
+                      } else if (value.length < 8){
+                        return "Must be at least 8 Characters";
+                      } else {
+                        return null;
                       }
-
-                      return null;
                     },
 
                   ),
@@ -125,11 +236,14 @@ class _FormPageState extends State<FormPage> {
                     obscureText: true,
                     keyboardType: TextInputType.text,
                     decoration:buildInputDecoration(Icons.lock,"Confirm Password"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (String value){
-                      if(value.isEmpty)
+                      if(value == null ||value.isEmpty)
                       {
                         return 'Please re-enter password';
                       }
+
+
                       print(password.text);
 
                       print(confirmpassword.text);
@@ -145,8 +259,8 @@ class _FormPageState extends State<FormPage> {
                 ),
 
                 SizedBox(
-                  width: 200,
-                  height: 50,
+                  width: 150,
+                  height: height * 0.05,
                   child: RaisedButton(
 
                     color: Colors.blue,
@@ -161,7 +275,6 @@ class _FormPageState extends State<FormPage> {
                         print("UnSuccessfull");
                       }
                     },
-
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
                         side: BorderSide(color: Colors.blue,width: 2)
@@ -174,6 +287,10 @@ class _FormPageState extends State<FormPage> {
             ),
           ),
         ),
+      ),
+            ],
+    ),
+    ),
       ),
     );
   }
